@@ -19,6 +19,8 @@ int main(){
     }
     sort(q2.begin(), q2.end());
     sort(oper.begin(), oper.end());
+    // for (auto x : q2) cout << x.first << " " << x.second <<  "\n";
+    // for (auto [ti, op, sp] : oper) cout << ti << " " << op << " " << sp <<"\n";
     vector<int> ans(m);
     for (auto &[ti, op, sp] : oper) {
         if (op == 0) K = max(K-sp, 0);
