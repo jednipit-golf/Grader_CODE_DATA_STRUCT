@@ -11,15 +11,12 @@ void CP::vector<T>::partial_sort(std::vector<iterator> &pos, CompareT comp) {
   // Write code here
   std::sort(pos.begin(), pos.end());
   std::vector<T> tmp;
-
-  for (auto &it: pos) {
-    tmp.push_back(*it);
+  for(auto &x:pos){
+    tmp.push_back(*x);
   }
-
-  std::sort(tmp.begin(), tmp.end(), comp);
-
+  sort(tmp.begin(),tmp.end(),comp);
   int idx = 0;
-  for (auto &it: pos) {
+  for(auto it:pos){
     *it = tmp[idx++];
   }
 }
