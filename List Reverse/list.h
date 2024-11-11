@@ -71,7 +71,7 @@ class list
     node *mHeader; // pointer to a header node
     size_t mSize;
 
-  public:
+  public: 
     //-------------- constructor & copy operator ----------
 
     // copy constructor
@@ -140,7 +140,7 @@ class list
     void pop_front() {
       erase(begin());
     }
-
+  //
     iterator insert(iterator it,const T& element) {
       node *n = new node(element,it.ptr->prev, it.ptr);
       it.ptr->prev->next = n;
