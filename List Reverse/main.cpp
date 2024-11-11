@@ -7,7 +7,7 @@
 #include <string>
 #include "list.h"
 #include "student.h"
-  
+    
 CP::list<int>::iterator move_to(CP::list<int>::iterator a,int oldp, int newp) {
     while (oldp < newp) {
       oldp++;

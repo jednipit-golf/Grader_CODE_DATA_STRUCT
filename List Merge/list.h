@@ -5,13 +5,12 @@
 #include <iostream>
 //#pragma once
 
-namespace CP {
+namespace CP { 
 
 template <typename T>
 class list
 {
   protected:
-
     class node {
       friend class list;
       public:
@@ -36,13 +35,13 @@ class list
 
         list_iterator(node *a) : ptr(a) { }
 
-        list_iterator& operator++() {
-          ptr = ptr->next;
+        list_iterator& operator++() { 
+          ptr = ptr->next; 
           return (*this);
         }
 
-        list_iterator& operator--() {
-          ptr = ptr->prev;
+        list_iterator& operator--() { 
+          ptr = ptr->prev; 
           return (*this);
         }
 
@@ -60,8 +59,8 @@ class list
 
         T& operator*() { return ptr->data; }
         T* operator->() { return &(ptr->data); }
-        bool operator==(const list_iterator& other) { return other.ptr == ptr; }
-        bool operator!=(const list_iterator& other) { return other.ptr != ptr; }
+        bool operator==(const list_iterator& other) const { return other.ptr == ptr; }
+        bool operator!=(const list_iterator& other) const { return other.ptr != ptr; }
     };
 
   public:
@@ -71,20 +70,21 @@ class list
     node *mHeader; // pointer to a header node
     size_t mSize;
 
-  public: 
+
+  public:
     //-------------- constructor & copy operator ----------
 
     // copy constructor
-    list(list<T>& a) :
+    list(const list<T>& a) :
       mHeader( new node() ), mSize( 0 ) {
-      for (iterator it = a.begin();it != a.end();it++) {
+      for (auto it = a.begin();it != a.end();it++) {
         push_back(*it);
       }
     }
 
     // default constructor
-    list() : mHeader( new node() ), mSize( 0 ) {
-    }
+    list() :
+      mHeader( new node() ), mSize( 0 ) { }
 
     // copy assignment operator using copy-and-swap idiom
     list<T>& operator=(list<T> other) {
@@ -115,8 +115,16 @@ class list
     iterator begin() {
       return iterator(mHeader->next);
     }
-  
+
     iterator end() {
+      return iterator(mHeader);
+    }
+
+    iterator begin() const {
+      return iterator(mHeader->next);
+    }
+
+    iterator end() const {
       return iterator(mHeader);
     }
     //----------------- access -----------------
@@ -140,7 +148,7 @@ class list
     void pop_front() {
       erase(begin());
     }
-  //
+
     iterator insert(iterator it,const T& element) {
       node *n = new node(element,it.ptr->prev, it.ptr);
       it.ptr->prev->next = n;
@@ -163,11 +171,9 @@ class list
     }
 
     void print() {
-      std::cout << "Size = " << mSize << std::endl;
-      int i = 0;
-      iterator before;
+      std::cout << "Size = " << mSize << "\n";
       std::cout << "From FRONT to BACK: ";
-      for (iterator it = begin();it!=end();before = it, it++,i++) {
+      for (auto it = begin();it!=end();it++) {
         std::cout << *it << " ";
       }
       std::cout << std::endl << "From BACK to FRONT: ";
@@ -176,10 +182,10 @@ class list
         --it;
         std::cout << *it << " ";
       }
-      std::cout << std::endl;
+      std::cout << "\n";
     }
 
-    iterator reverse(iterator a,iterator b);
+    void merge(list<list<T>> &ls);
 
 };
 

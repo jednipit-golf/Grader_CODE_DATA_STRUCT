@@ -8,8 +8,8 @@ typename CP::list<T>::iterator CP::list<T>::reverse(iterator a, iterator b) {
   //write your code here
   if(a==b){
     return a;
-  }
-  auto tmp = a ;
+  } 
+  auto tmp = a;
   while(a != b){
     b--;
     if (a == b) break;
