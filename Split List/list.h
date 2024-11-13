@@ -1,11 +1,11 @@
 #ifndef _CP_LIST_INCLUDED_
 #define _CP_LIST_INCLUDED_
-  
+
 #include <stdexcept>
 #include <iostream>
 //#pragma once
   
-namespace CP { 
+namespace CP {
 
 template <typename T>
 class list
@@ -35,13 +35,13 @@ class list
 
         list_iterator(node *a) : ptr(a) { }
 
-        list_iterator& operator++() { 
-          ptr = ptr->next; 
+        list_iterator& operator++() {
+          ptr = ptr->next;
           return (*this);
         }
 
-        list_iterator& operator--() { 
-          ptr = ptr->prev; 
+        list_iterator& operator--() {
+          ptr = ptr->prev;
           return (*this);
         }
 
@@ -69,7 +69,6 @@ class list
   protected:
     node *mHeader; // pointer to a header node
     size_t mSize;
-    bool mCheck;  // for quiz
 
 
   public:
@@ -81,12 +80,11 @@ class list
       for (iterator it = a.begin();it != a.end();it++) {
         push_back(*it);
       }
-      mCheck = true;
     }
 
     // default constructor
     list() :
-      mHeader( new node() ), mSize( 0 ) { mCheck = true; }
+      mHeader( new node() ), mSize( 0 ) { }
 
     // copy assignment operator using copy-and-swap idiom
     list<T>& operator=(list<T> other) {
@@ -152,7 +150,6 @@ class list
     }
 
     iterator erase(iterator it) {
-      if (mCheck) std::cout << "WRONG FUNCTION CALL" << std::endl;
       iterator tmp(it.ptr->next);
       it.ptr->prev->next = it.ptr->next;
       it.ptr->next->prev = it.ptr->prev;
@@ -162,51 +159,20 @@ class list
     }
 
     void clear() {
-      mCheck = false;
       while (mSize > 0) erase(begin());
     }
 
-    void check() {
-      node* p;
-      int n;
-      p = mHeader;
-      n = mSize+1;
-      while (n--) p = p->next;
-      if (p != mHeader) {
-        std::cout << "next POINTER ERROR" << std::endl;
-      }
-      p = mHeader;
-      n = mSize+1;
-      while (n--) p = p->prev;
-      if (p != mHeader) {
-        std::cout << "prev POINTER ERROR" << std::endl;
-      }
-    }
-
     void print() {
-      
-      std::cout<<"[ ";
-        for (iterator it = begin();it!=end(); it++) {
-          std::cout << *it <<" ";
-        }
-      std::cout<<"]"<<std::endl;
-    }
-    void printb() {
+      std::cout << " Header address = " << (mHeader) << std::endl;
+      int i = 0;
       iterator before;
-      std::cout<<"[ ";
-      iterator it = begin();
-      it--;
-      it--;
-      for (;it!=begin();it--) {
-        std::cout << *it <<" ";
+      for (iterator it = begin();it!=end();before = it, it++,i++) {
+        std::cout << "Node " << i << ": " << *it;
+        std::cout << " (prev = " << it.ptr->prev << ", I'm at " << it.ptr << ", next = " << it.ptr->next << ")" <<  std:: endl;
       }
-      std::cout << *it <<" ";
-      std::cout<<"]"<<std::endl;
     }
-
-    #include "shift.h"
+    #include "student.h"
 };
-
 
 }
 

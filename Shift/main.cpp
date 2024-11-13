@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-  
+    
 int main() {
   int n,k;
   CP::list<int> l;

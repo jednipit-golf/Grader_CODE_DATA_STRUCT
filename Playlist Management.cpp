@@ -1,11 +1,11 @@
-#ifndef _CP_LIST_INCLUDED_
-#define _CP_LIST_INCLUDED_
-  
-#include <stdexcept>
+#include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
-//#pragma once
-  
-namespace CP { 
+#include <string>
+#include <vector>
+#include <algorithm>
+
+namespace CP {
 
 template <typename T>
 class list
@@ -35,13 +35,13 @@ class list
 
         list_iterator(node *a) : ptr(a) { }
 
-        list_iterator& operator++() { 
-          ptr = ptr->next; 
+        list_iterator& operator++() {
+          ptr = ptr->next;
           return (*this);
         }
 
-        list_iterator& operator--() { 
-          ptr = ptr->prev; 
+        list_iterator& operator--() {
+          ptr = ptr->prev;
           return (*this);
         }
 
@@ -69,7 +69,6 @@ class list
   protected:
     node *mHeader; // pointer to a header node
     size_t mSize;
-    bool mCheck;  // for quiz
 
 
   public:
@@ -81,12 +80,11 @@ class list
       for (iterator it = a.begin();it != a.end();it++) {
         push_back(*it);
       }
-      mCheck = true;
     }
 
     // default constructor
     list() :
-      mHeader( new node() ), mSize( 0 ) { mCheck = true; }
+      mHeader( new node() ), mSize( 0 ) { }
 
     // copy assignment operator using copy-and-swap idiom
     list<T>& operator=(list<T> other) {
@@ -152,7 +150,6 @@ class list
     }
 
     iterator erase(iterator it) {
-      if (mCheck) std::cout << "WRONG FUNCTION CALL" << std::endl;
       iterator tmp(it.ptr->next);
       it.ptr->prev->next = it.ptr->next;
       it.ptr->next->prev = it.ptr->prev;
@@ -162,8 +159,17 @@ class list
     }
 
     void clear() {
-      mCheck = false;
       while (mSize > 0) erase(begin());
+    }
+
+    void print() {
+      std::cout << " Header address = " << (mHeader) << std::endl;
+      int i;
+      iterator before;
+      for (iterator it = begin();it!=end();before = it, it++,i++) {
+        std::cout << "Node " << i << ": " << *it;
+        std::cout << " (prev = " << it.ptr->prev << ", I'm at " << it.ptr << ", next = " << it.ptr->next << ")" <<  std:: endl;
+      }
     }
 
     void check() {
@@ -183,33 +189,69 @@ class list
       }
     }
 
-    void print() {
-      
-      std::cout<<"[ ";
-        for (iterator it = begin();it!=end(); it++) {
-          std::cout << *it <<" ";
-        }
-      std::cout<<"]"<<std::endl;
-    }
-    void printb() {
-      iterator before;
-      std::cout<<"[ ";
-      iterator it = begin();
-      it--;
-      it--;
-      for (;it!=begin();it--) {
-        std::cout << *it <<" ";
+    void reorder(int pos,std::vector<int> selected) {
+      //write your code only here
+      iterator positr = begin();
+      for(int i = 0; i < pos; i++)
+      	positr++;
+      std::vector<iterator> selitr(selected.size());
+      for(int i = 0; i < selected.size(); i++){
+      	selitr[i] = begin(); //iterator
+	    for(int j = 0; j < selected[i]; j++)
+	    	selitr[i]++;
       }
-      std::cout << *it <<" ";
-      std::cout<<"]"<<std::endl;
+      for(int i = 0; i < selected.size(); i++){
+      	insert(positr, *selitr[i]);
+      	erase(selitr[i]);
+      }
     }
 
-    #include "shift.h"
 };
-
 
 }
 
-#endif
+//----------------------------------------------
+int main() {
+  int n;
+  std::cin >> n;
+
+  CP::list<std::string> l;
+  int pos;
+  std::vector<int> selected;
+
+  while(n--) {
+    std::string st;
+    std::cin >> st;
+    l.push_back(st);
+  }
+
+  std::cin >> n;
+  while(n--) {
+    int a;
+    std::cin >> a;
+    selected.push_back(a);
+  }
+  std::sort(selected.begin(),selected.end());
+
+  //call student function
+  std::cin >> pos;
+  l.reorder(pos,selected);
+
+  //check result
+  l.check();
+  auto it = l.begin();
+  while (it != l.end()) {
+    std::cout << *it << " ";
+    it++;
+  }
+  std::cout << std::endl;
+  it = l.end(); it--;
+  while (it != l.end()) {
+    std::cout << *it << " ";
+    it--;
+  }
+  std::cout << std::endl;
+
+}
 
 
