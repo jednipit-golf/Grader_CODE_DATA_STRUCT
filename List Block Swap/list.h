@@ -6,7 +6,7 @@
 //#pragma once
   
 namespace CP {
-
+  
 template <typename T>
 class list
 {

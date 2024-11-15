@@ -4,65 +4,87 @@
 #include "list.h"
 
 template <typename T>
-void CP::list<T>::block_swap(iterator a1, iterator a2, iterator b1, iterator b2) {
-	// write your code here
-	if (a1.ptr == a2.ptr && a1.ptr == b1.ptr) {
-		return;
-	}
-	if (a1.ptr == a2.ptr && b1.ptr == b2.ptr) {
-		return;
-	}
-	node *s1 = a1.ptr->prev;
-	node *e1 = a2.ptr->prev;
-	node *s2 = b1.ptr->prev;
-	node *e2 = b2.ptr->prev;
-	if (a2.ptr != b1.ptr && b2.ptr != a1.ptr) {
-		if (b1.ptr != b2.ptr) {
-			s1->next = b1.ptr;
-			b1.ptr->prev = s1;
+void CP::list<T>::block_swap(iterator a1, iterator a2, iterator b1, iterator b2) { 
+	if(a1 == a2 && b1 == b2)	return ;
 
-			e2->next = a2.ptr;
-			a2.ptr->prev = e2;
+	if(a1 == b2){
+		std::swap(a1,b1);
+		std::swap(a2,b2);
+	}
+
+	if(a2 == b1){
+		iterator beforeA = a1.ptr->prev;
+		iterator lastA = a2.ptr->prev;
+		iterator beforeB = b1.ptr->prev;
+		iterator lastB = b2.ptr->prev;
+
+		// cut connection of [a1, a2)
+		a1.ptr->prev->next = a2.ptr;
+		a2.ptr->prev = a1.ptr->prev;
+
+		// cut connection of [b1, b2)
+		b1.ptr->prev->next = b2.ptr;
+		b2.ptr->prev = b1.ptr->prev;
+
+		// a comes before b
+		// no node between a2 and b1
+		lastB.ptr->next = a1.ptr;
+		a1.ptr->prev = lastB.ptr;
+
+		// connect node to beforeA
+		beforeA.ptr->next = b1.ptr;
+		b1.ptr->prev = beforeA.ptr;
+
+		// connect node to b2
+		b2.ptr->prev = lastA.ptr;
+		lastA.ptr->next = b2.ptr;
+	} else {
+		if(b1 == b2){
+			std::swap(a1,b1);
+			std::swap(a2,b2);
 		}
-		else if (b1.ptr == b2.ptr){
-			s1->next = a2.ptr;
-			a2.ptr->prev = s1;
+
+		iterator beforeA = a1.ptr->prev;
+		iterator lastA = a2.ptr->prev;
+		iterator beforeB = b1.ptr->prev;
+		iterator lastB = b2.ptr->prev;
+
+		// cut connection of [a1, a2)
+		a1.ptr->prev->next = a2.ptr;
+		a2.ptr->prev = a1.ptr->prev;
+
+		// cut connection of [b1, b2)
+		b1.ptr->prev->next = b2.ptr;
+		b2.ptr->prev = b1.ptr->prev;
+
+		// There exists node in the middle
+		if(a1 == a2){
+			// a is empty, put b in front of a
+			beforeA.ptr->next = b1.ptr;
+			b1.ptr->prev = beforeA.ptr;
+
+			lastB.ptr->next = a1.ptr;
+			a1.ptr->prev = lastB.ptr;
+			return ;
 		}
-		if (a1.ptr != a2.ptr) {
-			s2->next = a1.ptr;
-			a1.ptr->prev = s2;
 
-			e1->next = b2.ptr;
-			b2.ptr->prev = e1;
-		}
-		else if (a1.ptr == a2.ptr){
-			s2->next = b2.ptr;
-			b2.ptr->prev = s2;
-		}
+		// connect node to beforeA
+		beforeA.ptr->next = b1.ptr;
+		b1.ptr->prev = beforeA.ptr;
+
+		// connect node to beforeB
+		beforeB.ptr->next = a1.ptr;
+		a1.ptr->prev = beforeB.ptr;
+
+		// connect node to a2
+		a2.ptr->prev = lastB.ptr;
+		lastB.ptr->next = a2.ptr;
+
+		// connect node to b2
+		b2.ptr->prev = lastA.ptr;
+		lastA.ptr->next = b2.ptr;
 	}
-	else if (a2.ptr == b1.ptr) {
-		s1->next = b1.ptr;
-		b1.ptr->prev = s1;
-
-		s2->next = b2.ptr;
-		b2.ptr->prev = s2;
-
-		e2->next = a1.ptr;
-		a1.ptr->prev = e2;
-		
-	}
-	else {
-		s2->next = a1.ptr;
-		a1.ptr->prev = s2;
-
-		s1->next = a2.ptr;
-		a2.ptr->prev = s1;
-
-		e1->next = b1.ptr;
-		b1.ptr->prev = e1;
-		
-	}
-	
 }
 
 #endif
+

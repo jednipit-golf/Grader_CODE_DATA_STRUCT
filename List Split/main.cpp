@@ -6,7 +6,7 @@
 #include "list.h"
 #include "student.h"
 //#pragma once
-
+  
 
 bool check(CP::list<int> &l,CP::list<int> &check) {
   bool ok = true;

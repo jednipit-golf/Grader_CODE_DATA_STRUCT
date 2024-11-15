@@ -1,6 +1,6 @@
 #ifndef _CP_LIST_INCLUDED_
 #define _CP_LIST_INCLUDED_
-
+  
 #include <stdexcept>
 #include <iostream>
 //#pragma once
